@@ -21,7 +21,7 @@ let bucketColor = '#FFFFFF';
 let currentColor = '#A51DAB';
 let isEraser = false;
 let isMouseDown = false;
-// let drawnArray = [];
+let drawnArray = [];
 
 // Formatting Brush Size
 function displayBrushSize() {
@@ -34,7 +34,7 @@ function displayBrushSize() {
 
 // Setting Brush Size
 brushSlider.addEventListener('change', () => {
-  currentSize = brushSlider.vakue;
+  currentSize = brushSlider.value;
   displayBrushSize();
 });
 
@@ -42,7 +42,6 @@ brushSlider.addEventListener('change', () => {
 brushColorBtn.addEventListener('change', () => {
   isEraser = false;
   currentColor = `#${brushColorBtn.value}`;
-  displayBrushSize();
 });
 
 // Setting Background Color
@@ -119,7 +118,6 @@ function storeDrawn(x, y, size, color, erase) {
     color,
     erase,
   };
-  console.log(line);
   drawnArray.push(line);
 }
 
@@ -136,7 +134,6 @@ function getMousePosition(event) {
 canvas.addEventListener('mousedown', (event) => {
   isMouseDown = true;
   const currentPosition = getMousePosition(event);
-  console.log('mouse is clicked', currentPosition);
   context.moveTo(currentPosition.x, currentPosition.y);
   context.beginPath();
   context.lineWidth = currentSize;
@@ -178,15 +175,15 @@ saveStorageBtn.addEventListener('click', () => {
 // Load from Local Storage
 loadStorageBtn.addEventListener('click', () => {
   if (localStorage.getItem('savedCanvas')) {
-    drawnArray = JSON(localStorage.savedCanvas);
+    drawnArray = JSON.parse(localStorage.savedCanvas);
     restoreCanvas();
-  // Active Tool
+    // Active Tool
     activeToolEl.textContent = 'Canvas Loaded';
     setTimeout(switchToBrush, 1500);
   } else {
-    activeToolEl.textContent = 'No Canvas Found'
+    activeToolEl.textContent = 'No Canvas Found';
+    setTimeout(switchToBrush, 1500);
   }
-
 });
 
 // Clear Local Storage
